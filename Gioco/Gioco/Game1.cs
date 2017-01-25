@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,12 +11,24 @@ namespace Gioco
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
+        public const int WindowWidth = 1366;
+        public const int WindowsHeight = 768;
+
+        private SpriteFont _font;
+
+        private Dictionary<uint, Texture2D> _textureDataBase;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = WindowWidth,
+                PreferredBackBufferHeight = WindowsHeight,
+                // IsFullScreen = true    
+            };
+            
             Content.RootDirectory = "Content";
         }
 
@@ -32,7 +46,8 @@ namespace Gioco
                     // Parso elenco espansioni
             // Carico conseguenti cose
             // Carico mostri e png
-
+            
+            _textureDataBase = new Dictionary<uint, Texture2D>();
             base.Initialize();
         }
 
@@ -43,7 +58,11 @@ namespace Gioco
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // _textureDataBase.Add(1, Content.Load<Texture2D>(@"immagine"));
+
+            // _font = Content.Load<SpriteFont>("Font\\fontCreato");
 
             // TODO: use this.Content to load your game content here
         }
@@ -64,10 +83,17 @@ namespace Gioco
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            // Controllo GamePad
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) Exit(); 
+            
+            // Controllo KeyBoard
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
 
-            // TODO: Add your update logic here
+            var mouse = Mouse.GetState();
+            if (mouse.LeftButton == ButtonState.Pressed) { }
+            
+
+
 
             base.Update(gameTime);
         }
@@ -78,10 +104,16 @@ namespace Gioco
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(new Color(0, 0, 0));
+            _spriteBatch.Begin();
 
-            // TODO: Add your drawing code here
+            // Disegna texture sullo schermo
+            // _spriteBatch.Draw(_textureDataBase[1], new Vector2(10, 10), Color.White);
 
+            // Scrive del testo
+            // _spriteBatch.DrawString(_font, "Hello World", new Vector2(5, 5), new Color(255, 255, 255));
+            
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
