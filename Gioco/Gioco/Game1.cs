@@ -27,6 +27,11 @@ namespace Gioco
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            // Carico avventure
+                // Carico mappa
+                    // Parso elenco espansioni
+            // Carico conseguenti cose
+            // Carico mostri e png
 
             base.Initialize();
         }
